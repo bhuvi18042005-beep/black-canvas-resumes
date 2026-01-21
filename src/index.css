@@ -57,6 +57,14 @@
     --shadow-gold: 0 0 30px hsl(45 93% 58% / 0.15);
     --shadow-card: 0 10px 40px hsl(0 0% 0% / 0.3);
     --shadow-elevated: 0 20px 60px hsl(0 0% 0% / 0.4);
+    --shadow-neon: 0 0 5px hsl(45 93% 58%), 0 0 20px hsl(45 93% 58% / 0.5), 0 0 40px hsl(45 93% 58% / 0.3);
+    --shadow-inset: inset 0 2px 20px hsl(0 0% 0% / 0.3);
+
+    /* Additional colors */
+    --cyan: 185 95% 50%;
+    --purple: 270 80% 60%;
+    --emerald: 160 84% 39%;
+    --rose: 350 89% 60%;
 
     --sidebar-background: 0 0% 4%;
     --sidebar-foreground: 0 0% 98%;
@@ -112,6 +120,238 @@
   .card-elevated {
     background: var(--gradient-card);
     box-shadow: var(--shadow-card);
+  }
+
+  /* 3D Card Effect */
+  .card-3d {
+    background: var(--gradient-card);
+    box-shadow: var(--shadow-card);
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+  }
+
+  .card-3d:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg) translateZ(10px);
+    box-shadow: var(--shadow-elevated), 10px 10px 30px hsl(0 0% 0% / 0.3);
+  }
+
+  /* Neon Box */
+  .neon-box {
+    background: hsl(var(--card));
+    border: 1px solid hsl(var(--primary) / 0.3);
+    transition: all 0.4s ease;
+  }
+
+  .neon-box:hover {
+    border-color: hsl(var(--primary));
+    box-shadow: var(--shadow-neon);
+  }
+
+  /* Cyber Box */
+  .cyber-box {
+    position: relative;
+    background: hsl(var(--card));
+    clip-path: polygon(0 10px, 10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+  }
+
+  .cyber-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.2), transparent 50%);
+    pointer-events: none;
+  }
+
+  /* Holographic Card */
+  .holo-card {
+    position: relative;
+    background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--surface-elevated)) 100%);
+    overflow: hidden;
+  }
+
+  .holo-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      hsl(var(--primary) / 0.1) 45%,
+      hsl(var(--cyan) / 0.1) 50%,
+      hsl(var(--purple) / 0.1) 55%,
+      transparent 60%
+    );
+    background-size: 200% 200%;
+    animation: holo-shine 3s ease-in-out infinite;
+  }
+
+  @keyframes holo-shine {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+  }
+
+  /* Glitch Box */
+  .glitch-box {
+    position: relative;
+    background: hsl(var(--card));
+  }
+
+  .glitch-box::before,
+  .glitch-box::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border: 2px solid;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .glitch-box::before {
+    border-color: hsl(var(--cyan));
+    transform: translate(-3px, -3px);
+  }
+
+  .glitch-box::after {
+    border-color: hsl(var(--rose));
+    transform: translate(3px, 3px);
+  }
+
+  .glitch-box:hover::before,
+  .glitch-box:hover::after {
+    opacity: 0.5;
+    animation: glitch 0.3s infinite;
+  }
+
+  @keyframes glitch {
+    0%, 100% { transform: translate(-3px, -3px); }
+    25% { transform: translate(3px, -3px); }
+    50% { transform: translate(-3px, 3px); }
+    75% { transform: translate(3px, 3px); }
+  }
+
+  /* Morphing Border */
+  .morph-border {
+    position: relative;
+    background: hsl(var(--card));
+    border-radius: 1rem;
+  }
+
+  .morph-border::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 1rem;
+    background: linear-gradient(45deg, hsl(var(--primary)), hsl(var(--cyan)), hsl(var(--purple)), hsl(var(--primary)));
+    background-size: 400% 400%;
+    z-index: -1;
+    animation: morph-gradient 6s ease infinite;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+
+  .morph-border:hover::before {
+    opacity: 1;
+  }
+
+  @keyframes morph-gradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* Neumorphic Box */
+  .neumorphic {
+    background: hsl(var(--card));
+    box-shadow: 
+      8px 8px 20px hsl(0 0% 0% / 0.4),
+      -8px -8px 20px hsl(0 0% 15% / 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .neumorphic:hover {
+    box-shadow: 
+      12px 12px 30px hsl(0 0% 0% / 0.5),
+      -12px -12px 30px hsl(0 0% 15% / 0.15),
+      inset 0 0 0 1px hsl(var(--primary) / 0.2);
+  }
+
+  /* Spotlight Card */
+  .spotlight-card {
+    position: relative;
+    background: hsl(var(--card));
+    overflow: hidden;
+  }
+
+  .spotlight-card::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, hsl(var(--primary) / 0.3), transparent 70%);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .spotlight-card:hover::before {
+    opacity: 1;
+    animation: spotlight-move 2s ease-in-out infinite;
+  }
+
+  @keyframes spotlight-move {
+    0%, 100% { top: 20%; left: 20%; }
+    25% { top: 20%; left: 80%; }
+    50% { top: 80%; left: 80%; }
+    75% { top: 80%; left: 20%; }
+  }
+
+  /* Liquid Border */
+  .liquid-border {
+    position: relative;
+    background: hsl(var(--card));
+    overflow: hidden;
+    border-radius: 1rem;
+  }
+
+  .liquid-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 1rem;
+    padding: 2px;
+    background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--cyan)), hsl(var(--purple)), hsl(var(--primary)));
+    background-size: 300% 100%;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: liquid-flow 4s linear infinite;
+  }
+
+  @keyframes liquid-flow {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+  }
+
+  /* Pulse Ring Card */
+  .pulse-ring {
+    position: relative;
+  }
+
+  .pulse-ring::before {
+    content: '';
+    position: absolute;
+    inset: -10px;
+    border-radius: inherit;
+    border: 2px solid hsl(var(--primary) / 0.3);
+    animation: pulse-ring-anim 2s ease-out infinite;
+    pointer-events: none;
+  }
+
+  @keyframes pulse-ring-anim {
+    0% { transform: scale(0.95); opacity: 1; }
+    100% { transform: scale(1.05); opacity: 0; }
   }
 
   .shine-effect {
